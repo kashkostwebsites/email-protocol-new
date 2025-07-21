@@ -5,7 +5,8 @@ const port = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 
-let lastReceivedEmail = ""; // Store the most recent email
+let lastReceivedEmail = "";
+let lastIP = ""; // Store the most recent email
 
 app.get('/', (req, res) => {
   res.send(`
@@ -134,12 +135,12 @@ app.get('/recemail', (req, res) => {
   const emailText = req.query.emailtext;
   console.log(`Received email: ${emailText}`);
   lastReceivedEmail = emailText;
-  const ip = req.ip
+  const lastIP = req.ip; // Store the IP of the last received email
   res.send(`Email received: ${emailText}`);
 });
 
 app.get('/latest', (req, res) => {
-  res.json({ email: lastReceivedEmail, from: ip  });
+  res.json({ email: lastReceivedEmail, from: lastIP  });
 });
 
 app.listen(port, () => {
