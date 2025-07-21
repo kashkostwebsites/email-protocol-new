@@ -134,11 +134,12 @@ app.get('/recemail', (req, res) => {
   const emailText = req.query.emailtext;
   console.log(`Received email: ${emailText}`);
   lastReceivedEmail = emailText;
+  const ip = req.ip
   res.send(`Email received: ${emailText}`);
 });
 
 app.get('/latest', (req, res) => {
-  res.json({ email: lastReceivedEmail });
+  res.json({ email: lastReceivedEmail, from: ip  });
 });
 
 app.listen(port, () => {
