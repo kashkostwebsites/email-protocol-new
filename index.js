@@ -101,7 +101,7 @@ app.get('/', (req, res) => {
           const data = await res.json();
           const box = document.getElementById('emailDisplay');
           box.innerHTML = data.email
-            ? '<strong>Last Received:</strong><br>' + data.email
+            ? '<strong>Last Received:</strong><br>' + data.email + "From:" data.from
             : '<em>No email received yet.</em>';
         }
 
@@ -120,7 +120,7 @@ app.post('/sendemail', (req, res) => {
 
   try {
     axios.get(`http://${ip}/recemail`, {
-      params: { emailtext: emailText },
+      params: { emailtext: emailText, from: ip },
     });
   } catch (error) {
     console.error(`Error sending email to ${ip}:`, error);
@@ -135,7 +135,7 @@ app.get('/recemail', (req, res) => {
   const emailText = req.query.emailtext;
   console.log(`Received email: ${emailText}`);
   lastReceivedEmail = emailText;
-  const lastIP = req.ip; // Store the IP of the last received email
+  const lastIP = req.query.from; // Store the IP of the last received email
   res.send(`Email received: ${emailText}`);
 });
 
